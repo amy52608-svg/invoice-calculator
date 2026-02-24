@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>發票計算小工具 | 寶可夢會計師事務所</title>
+    <meta name="description" content="營業稅及統一發票開立金額計算機，支援含稅/未稅銷售額計算、營業稅額試算、統一編號驗證、漢字大寫金額轉換。">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>發票計算小工具</h1>
+            <p class="subtitle">營業稅、銷售額快速試算</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Left Column: Inputs -->
+            <div class="left-panel">
+                <div class="controls hide-on-print">
+                    <div class="control-group">
+                        <label>計算模式切換</label>
+                        <div class="toggle-group">
+                            <label class="toggle-label">
+                                <input type="radio" name="taxType" value="exclusive" checked>
+                                <span class="toggle-text">輸入 未稅金額<br><small>(算含稅)</small></span>
+                            </label>
+                            <label class="toggle-label">
+                                <input type="radio" name="taxType" value="inclusive">
+                                <span class="toggle-text">輸入 含稅總額<br><small>(算未稅)</small></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>稅率選擇</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="taxRate" value="0.05" checked> 應稅
+                                5%</label>
+                            <label class="radio-label"><input type="radio" name="taxRate" value="0"> 零稅率</label>
+                            <label class="radio-label"><input type="radio" name="taxRate" value="free"> 免稅</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-input-section hide-on-print">
+                    <div class="input-wrapper">
+                        <label for="amountInput" id="amountInputLabel">請輸入 <strong>未稅金額</strong> (NT$)</label>
+                        <input type="number" id="amountInput" placeholder="0" min="0" step="1">
+                    </div>
+                </div>
+
+                <div class="tools-section">
+                    <div class="tax-id-tool hide-on-print">
+                        <h3>統編驗證與自動查詢</h3>
+                        <div class="tax-id-input-group">
+                            <input type="text" id="taxIdInput" maxlength="8" placeholder="輸入 8 碼統一編號" pattern="\d{8}">
+                            <button id="verifyBtn">檢查</button>
+                        </div>
+                        <div id="taxIdMessage" class="message"></div>
+                        <div id="companyNameDisplay" class="company-display"></div>
+                    </div>
+                </div>
+            </div> <!-- End Left Column -->
+
+            <!-- Right Column: Results & Export -->
+            <div class="right-panel">
+                <div class="results-card">
+                    <h2>計算結果</h2>
+
+                    <div class="result-row">
+                        <span class="result-label">銷售額 (未稅)：</span>
+                        <span class="result-value" id="salesAmount">0</span>
+                    </div>
+
+                    <div class="result-row">
+                        <span class="result-label">營業稅額：</span>
+                        <span class="result-value" id="taxAmount">0</span>
+                    </div>
+
+                    <div class="result-row total">
+                        <span class="result-label">總計 (含稅)：</span>
+                        <span class="result-value" id="totalAmount">0</span>
+                    </div>
+
+                    <div class="result-row uppercase-row">
+                        <span class="result-label">大寫金額：</span>
+                        <span class="uppercase-text" id="uppercaseAmount">零元整</span>
+                    </div>
+                </div>
+
+                <div class="actions hide-on-print">
+                    <button id="printBtn" class="btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                            <rect x="6" y="14" width="12" height="8"></rect>
+                        </svg>
+                        匯出 / 列印 (A4格式)
+                    </button>
+                    <p class="export-hint" style="font-size: 0.85rem; color: #666; margin-top: 10px;">(列印時將自動隱藏按鈕與底色)
+                    </p>
+                </div>
+
+                <!-- Print only display for company -->
+                <div class="print-only print-company-info" id="printCompanyInfo" style="display: none;">
+                    <h3>買受人資訊</h3>
+                    <p><strong>統一編號：</strong> <span id="printTaxId">-</span></p>
+                    <p><strong>公司/單位名稱：</strong> <span id="printCompanyName">-</span></p>
+                </div>
+            </div> <!-- End Right Column -->
+        </div> <!-- End Main Content -->
+    </div>
+
+    <footer>
+        <p>寶可夢會計師事務所 製作</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
